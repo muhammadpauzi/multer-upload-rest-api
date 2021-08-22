@@ -7,12 +7,19 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "categories": [
+  "keywords": [
     "express",
     "multer",
     "upload",
     "rest-api"
   ],
+  "author": {
+    "name": "Muhammad Pauzi"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muhammadpauzi/multer-upload-rest-api"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
