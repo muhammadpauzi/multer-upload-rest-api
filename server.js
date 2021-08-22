@@ -1,30 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const multer = require('multer');
-const path = require('path');
+const uploadFile = require('./utils/upload');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const maxSize = 2 * 1024 * 1024; // 2MB
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'uploads'));
-    },
-    filename: (req, file, cb) => {
-        const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        // cek method file
-        // console.log(file.fieldname)
-        cb(null, uniquePrefix + path.extname(file.originalname));
-    }
-});
-
-const uploadFile = multer({
-    storage,
-    limits: {
-        fileSize: maxSize
-    }
-}).single('file');
 
 app.use(cors());
 
@@ -33,6 +12,7 @@ app.get('/', (req, res) => {
         message: 'OK'
     });
 });
+
 app.post('/upload', (req, res) => {
     uploadFile(req, res, (err) => {
         // errors handling
@@ -42,19 +22,23 @@ app.post('/upload', (req, res) => {
                     message: 'File size cannot be larger than 2MB!'
                 });
             }
+
+            // if file not sended / not exists
             if (err.code == "LIMIT_UNEXPECTED_FILE") {
-                // if file not sended
                 if (req.file === undefined) {
                     return res.status(400).json({ message: "Please upload a file!" })
                 }
             }
+
+            console.log(err);
+
             return res.status(500).json({
                 message: 'Could not upload the file'
             });
         }
 
         return res.status(201).json({
-            message: 'File uploded'
+            message: 'File uploaded'
         });
     });
 });
