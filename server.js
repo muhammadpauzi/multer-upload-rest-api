@@ -27,7 +27,11 @@ app.get('/api/images', (req, res) => {
 
         let fileInfos = [];
         files.map(file => {
-            fileInfos = [...fileInfos, { name: file, url: join(BASEURL, 'uploads', file) }];
+            fileInfos = [...fileInfos, {
+                name: file,
+                url: join(BASEURL, 'uploads', file),
+                downloadUrl: join(BASEURL, 'api/images/download', file)
+            }];
         });
 
         return response(res, 200, {
