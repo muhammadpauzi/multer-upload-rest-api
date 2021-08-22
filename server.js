@@ -7,6 +7,7 @@ const { response, uploadFile } = require('./utils');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const BASEURL = 'http://localhost:5000';
+const directoryPath = join(__dirname, 'uploads');
 
 app.use(cors());
 
@@ -17,7 +18,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/images', (req, res) => {
-    const directoryPath = join(__dirname, 'uploads');
     readdir(directoryPath, (err, files) => {
         if (err) {
             return response(res, 500, {
@@ -69,6 +69,17 @@ app.post('/upload', (req, res) => {
         });
     });
 });
+
+app.get('/download/:name', (req, res) => {
+    const name = req.params.name;
+    res.download(join(directoryPath, name), (err) => {
+        if (err) {
+            return response(res, 500, {
+                message: "Could not donwload the file"
+            });
+        }
+    });
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
