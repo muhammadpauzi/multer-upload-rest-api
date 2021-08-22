@@ -75,7 +75,7 @@ app.get('/api/images/download/:name', (req, res) => {
     res.download(join(directoryPath, fileName),/** fileName,*/(err) => {
         if (err) {
             return response(res, 500, {
-                message: "Could not donwload the file"
+                message: "Could not download the file"
             });
         }
     });
