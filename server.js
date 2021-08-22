@@ -30,7 +30,11 @@ app.post('/upload', (req, res) => {
                 }
             }
 
-            console.log(err);
+            if (err.code == "FILE_TYPE_NOT_ALLOWED") {
+                return res.status(400).json({
+                    message: err.message // from custom error in utils/upload.js
+                });
+            }
 
             return res.status(500).json({
                 message: 'Could not upload the file'
