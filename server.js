@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/images', (req, res) => {
+app.get('/api/images', (req, res) => {
     readdir(directoryPath, (err, files) => {
         if (err) {
             return response(res, 500, {
@@ -36,7 +36,7 @@ app.get('/images', (req, res) => {
     });
 });
 
-app.post('/upload', (req, res) => {
+app.post('/api/images/upload', (req, res) => {
     uploadFile(req, res, (err) => {
         // errors handling
         if (err) {
@@ -70,9 +70,9 @@ app.post('/upload', (req, res) => {
     });
 });
 
-app.get('/download/:name', (req, res) => {
-    const name = req.params.name;
-    res.download(join(directoryPath, name), (err) => {
+app.get('/api/images/download/:name', (req, res) => {
+    const fileName = req.params.name;
+    res.download(join(directoryPath, fileName),/** fileName,*/(err) => {
         if (err) {
             return response(res, 500, {
                 message: "Could not donwload the file"
