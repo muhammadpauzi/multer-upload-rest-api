@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const uploadFile = require('./utils/upload');
+const { response, uploadFile } = require('./utils');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,7 +18,7 @@ app.post('/upload', (req, res) => {
         // errors handling
         if (err) {
             if (err.code == "LIMIT_FILE_SIZE") {
-                return res.status(400).json({
+                return response(res, 400, {
                     message: 'File size cannot be larger than 2MB!'
                 });
             }
@@ -26,23 +26,25 @@ app.post('/upload', (req, res) => {
             // if file not sended / not exists
             if (err.code == "LIMIT_UNEXPECTED_FILE") {
                 if (req.file === undefined) {
-                    return res.status(400).json({ message: "Please upload a file!" })
+                    return response(res, 400, {
+                        message: "Please upload a file!"
+                    });
                 }
             }
 
             if (err.code == "FILE_TYPE_NOT_ALLOWED") {
-                return res.status(400).json({
-                    message: err.message // from custom error in utils/upload.js
+                return response(res, 400, {
+                    message: err.message
                 });
             }
 
-            return res.status(500).json({
+            return response(res, 500, {
                 message: 'Could not upload the file'
             });
         }
 
-        return res.status(201).json({
-            message: 'File uploaded'
+        return response(res, 201, {
+            message: 'The file uploaded successfully'
         });
     });
 });
