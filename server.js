@@ -23,15 +23,6 @@ app.post('/upload', (req, res) => {
                 });
             }
 
-            // if file not sended / not exists
-            if (err.code == "LIMIT_UNEXPECTED_FILE") {
-                if (req.file === undefined) {
-                    return response(res, 400, {
-                        message: "Please upload a file!"
-                    });
-                }
-            }
-
             if (err.code == "FILE_TYPE_NOT_ALLOWED") {
                 return response(res, 400, {
                     message: err.message
@@ -40,6 +31,13 @@ app.post('/upload', (req, res) => {
 
             return response(res, 500, {
                 message: 'Could not upload the file'
+            });
+        }
+
+        // if file doesn't exists or doesn't sent
+        if (req.file === undefined) {
+            return response(res, 400, {
+                message: "Please upload a file!"
             });
         }
 
