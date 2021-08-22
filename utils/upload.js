@@ -5,7 +5,7 @@ const maxSize = 2 * 1024 * 1024; // 2MB
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads'); // the path is relative from server.js
+        cb(null, './uploads'); // the path is relative from server.js
     },
     filename: (req, file, cb) => {
         const uniquePrefix = Date.now() + '_' + Math.round(Math.random() * 1E9);
