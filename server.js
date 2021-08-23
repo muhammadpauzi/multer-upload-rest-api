@@ -13,7 +13,14 @@ app.use(cors());
 
 app.get('/', (req, res) => {
     res.status(200).json({
-        message: 'OK'
+        message: 'This is home page of multer-upload-rest-api',
+        endpoints: {
+            images: '/api/images',
+            upload: '/api/images/upload',
+            download: '/api/images/download/<file_name>',
+        },
+        creator: "Muhammad Pauzi",
+        repository: "https://github.com/muhammadpauzi/multer-upload-rest-api"
     });
 });
 
