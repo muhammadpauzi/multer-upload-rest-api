@@ -3,6 +3,7 @@ const cors = require('cors');
 const { readdir } = require('fs');
 const { join } = require('path');
 const { response, uploadFile } = require('./utils');
+const { message: { MESSAGE_COULD_NOT_UPLOAD, MESSAGE_COULD_NOT_DOWNLOAD, MESSAGE_FILE_REQUIRED, MESSAGE_FILE_UPLOADED_SUCCESSFULLY, MESSAGE_LIMIT_FILE_SIZE, MESSAGE_SERVER_ERROR } } = require('./constants');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -28,7 +29,7 @@ app.get('/api/images', (req, res) => {
     readdir(directoryPath, (err, files) => {
         if (err) {
             return response(res, 500, {
-                message: "Something went wrong",
+                message: MESSAGE_SERVER_ERROR,
             });
         }
 
@@ -54,7 +55,7 @@ app.post('/api/images/upload', (req, res) => {
         if (err) {
             if (err.code == "LIMIT_FILE_SIZE") {
                 return response(res, 400, {
-                    message: 'File size cannot be larger than 2MB!'
+                    message: MESSAGE_LIMIT_FILE_SIZE
                 });
             }
 
@@ -65,19 +66,19 @@ app.post('/api/images/upload', (req, res) => {
             }
 
             return response(res, 500, {
-                message: 'Could not upload the file'
+                message: MESSAGE_COULD_NOT_UPLOAD
             });
         }
 
         // if file doesn't exists or doesn't sent
         if (req.file === undefined) {
             return response(res, 400, {
-                message: "Please upload a file!"
+                message: MESSAGE_FILE_REQUIRED
             });
         }
 
         return response(res, 201, {
-            message: 'The file uploaded successfully'
+            message: MESSAGE_FILE_UPLOADED_SUCCESSFULLY
         });
     });
 });
@@ -87,7 +88,7 @@ app.get('/api/images/download/:name', (req, res) => {
     res.download(join(directoryPath, fileName),/** fileName,*/(err) => {
         if (err) {
             return response(res, 500, {
-                message: "Could not download the file"
+                message: MESSAGE_COULD_NOT_DOWNLOAD
             });
         }
     });

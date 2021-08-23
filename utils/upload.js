@@ -1,5 +1,6 @@
 const multer = require('multer');
 const path = require('path');
+const { message: { MESSAGE_FILE_NOT_ALLOWED } } = require('../constants');
 
 const maxSize = 2 * 1024 * 1024; // 2MB
 
@@ -28,7 +29,7 @@ const checkFileType = (file, cb) => {
     } else {
         cb({
             code: "FILE_TYPE_NOT_ALLOWED",
-            message: "Only image files are allowed to be uploaded"
+            message: MESSAGE_FILE_NOT_ALLOWED
         });
     }
 }
