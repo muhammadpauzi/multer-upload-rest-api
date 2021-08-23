@@ -42,7 +42,8 @@ app.get('/api/images', (req, res) => {
         });
 
         return response(res, 200, {
-            files: fileInfos
+            totalImages: fileInfos.length,
+            images: fileInfos
         });
     });
 });
