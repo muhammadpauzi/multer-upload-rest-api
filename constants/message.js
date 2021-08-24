@@ -1,4 +1,4 @@
-const MESSAGE_FILE_NOT_ALLOWED = "Only image files are allowed to be uploaded.";
+const MESSAGE_FILE_NOT_ALLOWED = "Only image (jpg, jpeg, png, gif) files are allowed to be uploaded.";
 const MESSAGE_SERVER_ERROR = "Something went wrong.";
 const MESSAGE_LIMIT_FILE_SIZE = 'File size cannot be larger than 2MB!';
 const MESSAGE_COULD_NOT_UPLOAD = 'Could not upload the file.';
