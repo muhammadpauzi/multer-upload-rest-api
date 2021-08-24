@@ -8,14 +8,16 @@ const { message: { MESSAGE_COULD_NOT_UPLOAD, MESSAGE_COULD_NOT_DOWNLOAD, MESSAGE
 const app = express();
 const PORT = process.env.PORT || 5000;
 const BASEURL = 'http://localhost:5000';
-const directoryPath = join(__dirname, 'uploads');
+const uploadDirectoryPath = join(__dirname, 'uploads');
 
 app.use(cors());
+app.use(express.static('uploads'));
 
 app.get('/', (req, res) => {
     res.status(200).json({
         message: 'This is home page of multer-upload-rest-api',
         endpoints: {
+            image: '/images/<file_name>',
             images: '/api/images',
             upload: '/api/images/upload',
             download: '/api/images/download/<file_name>',
@@ -26,7 +28,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/images', (req, res) => {
-    readdir(directoryPath, (err, files) => {
+    readdir(join(uploadDirectoryPath, 'images'), (err, files) => {
         if (err) {
             return response(res, 500, {
                 message: MESSAGE_SERVER_ERROR,
@@ -37,7 +39,7 @@ app.get('/api/images', (req, res) => {
         files.map(file => {
             fileInfos = [...fileInfos, {
                 name: file,
-                url: join(BASEURL, 'uploads', file),
+                url: join(BASEURL, 'images', file),
                 downloadUrl: join(BASEURL, 'api/images/download', file)
             }];
         });
@@ -85,7 +87,7 @@ app.post('/api/images/upload', (req, res) => {
 
 app.get('/api/images/download/:name', (req, res) => {
     const fileName = req.params.name;
-    res.download(join(directoryPath, fileName),/** fileName,*/(err) => {
+    res.download(join(uploadDirectoryPath, 'images', fileName),/** fileName,*/(err) => {
         if (err) {
             return response(res, 500, {
                 message: MESSAGE_COULD_NOT_DOWNLOAD
