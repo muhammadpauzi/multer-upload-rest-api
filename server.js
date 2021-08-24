@@ -17,10 +17,10 @@ app.get('/', (req, res) => {
     res.status(200).json({
         message: 'This is home page of multer-upload-rest-api',
         endpoints: {
-            image: '/images/<file_name>',
-            images: '/api/images',
-            upload: '/api/images/upload',
-            download: '/api/images/download/<file_name>',
+            image: BASEURL + '/images/<file_name>',
+            images: BASEURL + '/api/images',
+            upload: BASEURL + '/api/images/upload',
+            download: BASEURL + '/api/images/download/<file_name>',
         },
         creator: "Muhammad Pauzi",
         repository: "https://github.com/muhammadpauzi/multer-upload-rest-api"
@@ -39,8 +39,8 @@ app.get('/api/images', (req, res) => {
         files.map(file => {
             fileInfos = [...fileInfos, {
                 name: file,
-                url: join(BASEURL, 'images', file),
-                downloadUrl: join(BASEURL, 'api/images/download', file)
+                url: BASEURL + '/images/' + file,
+                downloadUrl: BASEURL + '/api/images/download/' + file
             }];
         });
 
